@@ -1,5 +1,6 @@
 const express = require('express')
 const cors = require('cors')
+const movieRouter = require('./routes/movies')
 const app = express()
 const port = 3000
 
@@ -9,6 +10,12 @@ app.use(cors({
 }))
 
 
+// middleware for body parse
+app.use(express.json())
+
+// middleware for static assets
+app.use(express.static('public'))
+
 
 
 // base route
@@ -16,6 +23,8 @@ app.get('/', (req, res) => {
   res.send('Welcome to Movies API')
 })
 
+
+app.use('/api/v1/movies', movieRouter)
 
 
 
