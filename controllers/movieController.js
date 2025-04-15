@@ -1,3 +1,4 @@
+
 const connection = require('../data/db')
 
 function index(req, res) {
@@ -11,7 +12,7 @@ function index(req, res) {
 
 
 function show(req, res) {
-  const id = req.params.id
+  const id = Number(req.params.id)
 
   const sql = 'SELECT * FROM movies WHERE id=?'
 
@@ -31,6 +32,25 @@ function show(req, res) {
 }
 
 
+function storeReview(req, res) {
+  const id = Number(req.params.id)
+
+  const created_at = new Date().toISOString().slice(0, 19).replace('T', ' ')
+  const updated_at = created_at
+
+  const { name, vote, text, } = req.body
+
+  const sql = 'INSERT INTO reviews (movie_id, name, vote, text, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)'
+
+  const values = [id, name, vote, text, created_at, updated_at]
+
+  connection.query(sql, values, (error, results) => {
+    if (error) return res.status(500).json(error.message)
+    if (results.affectedRows === 0) return res.status(404).json('Error! Movie not Found')
+    res.status(201).json({ message: 'Review added succesfully', reviewId: results.insertId })
+  })
+}
 
 
-module.exports = { index, show }
+
+module.exports = { index, show, storeReview }
