@@ -15,11 +15,18 @@ function show(req, res) {
 
   const sql = 'SELECT * FROM movies WHERE id=?'
 
+  const sqlReview = 'SELECT * FROM reviews WHERE movie_id = ?'
+
   connection.query(sql, [id], (err, results) => {
     if (err) return res.status(500).json('Server Error')
     if (results.length === 0) return res.status(404).json('Movie not found')
     const movie = results[0]
-    res.json(movie)
+
+    connection.query(sqlReview, [id], (err, reviews) => {
+      if (err) return res.status(500).json('Server Error')
+      movie.reviews = reviews
+      res.json(movie)
+    })
   })
 }
 
