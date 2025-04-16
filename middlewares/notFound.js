@@ -1,6 +1,5 @@
-const notFound = (res, req, next) => {
-  res.status(404).send('Page not Found')
-}
-
+const notFound = (req, res, next) => {
+  res.status(404).json({ message: 'Page not Found' });
+};
 
 module.exports = notFound
