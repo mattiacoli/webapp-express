@@ -51,6 +51,23 @@ function storeReview(req, res) {
   })
 }
 
+function newMovie(req, res) {
+
+  const created_at = new Date().toISOString().slice(0, 19).replace("T", " ")
+  const updated_at = created_at
+
+  const { title, director, genre, release_year, abstract, image } = req.body
+
+  const sql = 'INSERT INTO movies  (title, director, genre, release_year, abstract, image, created_at, updated_at)  VALUES(?, ?, ?, ?, ?, ?, ?, ?)'
+
+  const values = [title, director, genre, release_year, abstract, image, created_at, updated_at]
+
+  connection.query(sql, values, (error, results) => {
+    if (error) return resStatus(500).json(error.message)
+    res.status(201).json('Movie added succesfully')
+  })
+
+}
 
 
-module.exports = { index, show, storeReview }
+module.exports = { index, show, storeReview, newMovie }
