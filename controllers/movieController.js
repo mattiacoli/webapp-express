@@ -64,7 +64,7 @@ function newMovie(req, res) {
 
   const values = [title, director, genre, release_year, abstract, image, created_at, updated_at]
 
-  connection.query(sql, values, (error, results) => {
+  connection.query(sql, values, (error) => {
     if (error) return resStatus(500).json(error.message)
     res.status(201).json('Movie added succesfully')
   })
