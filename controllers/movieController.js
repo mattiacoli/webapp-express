@@ -56,7 +56,9 @@ function newMovie(req, res) {
   const created_at = new Date().toISOString().slice(0, 19).replace("T", " ")
   const updated_at = created_at
 
-  const { title, director, genre, release_year, abstract, image } = req.body
+  const image = req.file.filename
+
+  const { title, director, genre, release_year, abstract } = req.body
 
   const sql = 'INSERT INTO movies  (title, director, genre, release_year, abstract, image, created_at, updated_at)  VALUES(?, ?, ?, ?, ?, ?, ?, ?)'
 
